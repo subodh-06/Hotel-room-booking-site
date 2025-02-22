@@ -63,7 +63,7 @@ import {
           answer:
             "You can reach our customer support team via live chat, email, or phone. Visit our 'Contact Us' page for details.",
         },
-    ],
+    ], 
   
   }: FaqProps) => {
     return (
