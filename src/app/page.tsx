@@ -6,7 +6,7 @@ import Navbar from "@/components/ui/Navbar";
 import ExclusiveDeals from "@/components/ui/NotifyOffer";
 import ImageBanner from "@/components/ui/ResponsiveImg";
 import Stats from "@/components/ui/Stats";
-import Image from "next/image";
+
 
 export default function Home() {
   return (

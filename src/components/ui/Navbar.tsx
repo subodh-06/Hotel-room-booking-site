@@ -1,11 +1,12 @@
 "use client";
 
 import { MenuIcon } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
@@ -24,48 +25,42 @@ const Navbar = () => {
         <nav className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <img
-              src="/hotel.svg"
-              alt="logo"
-              className="w-8"
-            />
-            <span className="text-lg font-semibold">StayEase</span>
+            <Link href="/" className="flex items-center gap-2">
+              <Image
+                src="/hotel.svg"
+                alt="logo"
+                width={32}
+                height={32}
+                priority
+              />
+              <span className="text-lg font-semibold">StayEase</span>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
           <NavigationMenu className="hidden lg:flex justify-center">
             <NavigationMenuList className="flex items-center gap-6">
               <NavigationMenuItem>
-                <NavigationMenuLink
-                  href="/"
-                  className={navigationMenuTriggerStyle()}
-                >
+                <Link href="/" className={navigationMenuTriggerStyle()}>
                   Home
-                </NavigationMenuLink>
+                </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <NavigationMenuLink
-                  href="#"
-                  className={navigationMenuTriggerStyle()}
-                >
+                <Link href="#" className={navigationMenuTriggerStyle()}>
                   Book a Room
-                </NavigationMenuLink>
+                </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <NavigationMenuLink
-                  href="#"
-                  className={navigationMenuTriggerStyle()}
-                >
+                <Link href="#" className={navigationMenuTriggerStyle()}>
                   Contact
-                </NavigationMenuLink>
+                </Link>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
 
           {/* Desktop Buttons */}
           <div className="hidden lg:flex items-center gap-4">
-            <Button variant="outline">Sign in</Button>
-            <Button>Start for free</Button>
+            <Button>Sign in</Button>
           </div>
 
           {/* Mobile Menu */}
@@ -79,34 +74,31 @@ const Navbar = () => {
               <SheetHeader>
                 <SheetTitle>
                   <div className="flex items-center gap-4">
-                    <img
-                      src="https://shadcnblocks.com/images/block/block-1.svg"
+                    <Image
+                      src="/hotel.svg"
                       alt="logo"
-                      className="w-8"
+                      width={32}
+                      height={32}
+                      priority
                     />
-                    <span className="text-lg font-semibold">
-                      Shadcnblocks.com
-                    </span>
+                    <span className="text-lg font-semibold">StayEase</span>
                   </div>
                 </SheetTitle>
               </SheetHeader>
               <div className="flex flex-col items-start">
                 <div className="flex flex-col gap-4 w-full mt-4">
-                  <a href="/" className="font-medium">
+                  <Link href="/" className="font-medium">
                     Home
-                  </a>
-                  <a href="#" className="font-medium">
+                  </Link>
+                  <Link href="#" className="font-medium">
                     Book a Room
-                  </a>
-                  <a href="#" className="font-medium">
+                  </Link>
+                  <Link href="#" className="font-medium">
                     Contact
-                  </a>
+                  </Link>
                 </div>
                 <div className="mt-6 flex flex-col gap-4 w-full">
-                  <Button variant="outline" className="w-full">
-                    Sign in
-                  </Button>
-                  <Button className="w-full">Start for free</Button>
+                  <Button className="w-full">Sign in</Button>
                 </div>
               </div>
             </SheetContent>
