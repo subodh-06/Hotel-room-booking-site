@@ -18,13 +18,14 @@ export default function HotelBookingForm() {
 
   return (
     <div className="max-w-5xl mx-auto p-6 bg-zinc-800 shadow-md rounded-lg">
-      <div className="grid grid-cols-4 gap-4 items-center">
+      {/* Responsive Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Location Input */}
         <div>
           <label className="block text-sm font-medium text-gray-50">Location</label>
           <Input 
             placeholder="Enter city or hotel name" 
-            className="text-black"
+            className="text-black w-full"
             value={location} 
             onChange={(e) => setLocation(e.target.value)} 
           />
@@ -77,7 +78,7 @@ export default function HotelBookingForm() {
                 <span>{adults} Adults | {rooms} Room</span>
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[350px] p-4 bg-white shadow-md rounded-lg">
+            <PopoverContent className="w-[300px] p-4 bg-white shadow-md rounded-lg">
               {/* Rooms Selector */}
               <div className="flex justify-between items-center mb-3">
                 <span className="text-sm text-gray-600">Rooms (Max 8)</span>
@@ -109,7 +110,9 @@ export default function HotelBookingForm() {
 
       {/* Search Button - Centered below the row */}
       <div className="mt-4 flex justify-center">
-      <Button>Search Hotels</Button>
+        <Button className="w-full sm:w-auto  py-2 px-6 hover:bg-orange-600">
+          Search Hotels
+        </Button>
       </div>
     </div>
   );
