@@ -1,6 +1,9 @@
-import HotelBookingForm from "./SearchRoom";
+"use client";
+import HotelBookingForm from "../HotelBookingForm";
+import { useRouter } from "next/navigation";
 
 export default function HeroSection() {
+  const router = useRouter();
   return (
     <section className="bg-[#141413] text-white py-16 flex flex-col justify-center items-center px-4">
       
@@ -16,7 +19,20 @@ export default function HeroSection() {
 
       {/* Booking UI Component */}
       <div className="w-full max-w-5xl">
-        <HotelBookingForm />
+      <HotelBookingForm
+        onSearch={(params) => {
+          const query = new URLSearchParams({
+            location: params.location,
+            checkIn: params.checkIn?.toISOString() || "",
+            checkOut: params.checkOut?.toISOString() || "",
+            rooms: params.rooms.toString(),
+            adults: params.adults.toString(),
+            children: params.children.toString(),
+          }).toString();
+
+          router.push(`/search?${query}`);
+        }}
+      />
       </div>
       
     </section>

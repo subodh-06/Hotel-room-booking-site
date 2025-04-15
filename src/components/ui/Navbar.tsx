@@ -46,7 +46,7 @@ const Navbar = () => {
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link href="#" className={navigationMenuTriggerStyle()}>
+                <Link href="/book-a-room" className={navigationMenuTriggerStyle()}>
                   Book a Room
                 </Link>
               </NavigationMenuItem>
@@ -60,7 +60,7 @@ const Navbar = () => {
 
           {/* Desktop Buttons */}
           <div className="hidden lg:flex items-center gap-4">
-            <Button>Sign in</Button>
+            <Button ><Link href={"/login"}>Sign in</Link></Button>
           </div>
 
           {/* Mobile Menu */}
