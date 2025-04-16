@@ -1,41 +1,50 @@
-"use client";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import HotelBookingForm from "@/components/HotelBookingForm";
-import HotelCard from "@/components/HotelCard";
-import { Hotel } from "@/types/types"; // ✅ import the type
-import Navbar from "@/components/ui/Navbar";
-import Footer from "@/components/ui/Footer";
+'use client';
 
+import { useState } from 'react';
+import SearchForm from '@/components/hotels/SearchForm';
+import HotelCard from '@/components/hotels/HotelCard';
+import { fetchHotels } from '@/lib/api';
+import { Hotel } from '@/types/hotel';
+import Navbar from '@/components/ui/Navbar';
+import Footer from '@/components/ui/Footer';
 
 export default function SearchPage() {
-  const searchParams = useSearchParams();
-  const [hotels, setHotels] = useState<Hotel[]>([]); // ✅ explicitly typed array
+  const [hotels, setHotels] = useState<Hotel[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  useEffect(() => {
-    const fetchHotels = async () => {
-      const params = Object.fromEntries(searchParams.entries());
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE}/api/hotel/search`, { params });
-      setHotels(res.data.hotels);
-    };
-    fetchHotels();
-  }, [searchParams]);
+  const handleSearch = async (city: string) => {
+    setLoading(true);
+    setError('');
+    try {
+      const data = await fetchHotels(city);
+      setHotels(data);
+    } catch (err) {
+      console.error(err);
+      setError('Failed to load hotels');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
     <Navbar/>
-    <div className="bg-[#141413]">
-    <div className="p-4">
-      <HotelBookingForm />
-      <div className="grid h-screen grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-        {hotels.map((hotel) => (
-          <HotelCard key={hotel._id} hotel={hotel} />
-        ))}
+    <div className="min-h-screen bg-[#141413] text-gray-100 p-6">
+      <div className="container mx-auto">
+        <h1 className="text-3xl font-bold mb-6 text-gray-50">Search Hotels</h1>
+        <SearchForm onSearch={handleSearch} />
+        {loading && <p className="text-gray-400">Loading hotels...</p>}
+        {error && <p className="text-red-500">{error}</p>}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {hotels.map((hotel) => (
+            <HotelCard key={hotel._id} hotel={hotel} />
+          ))}
+        </div>
       </div>
-    </div>
     </div>
     <Footer/>
     </>
+    
   );
 }

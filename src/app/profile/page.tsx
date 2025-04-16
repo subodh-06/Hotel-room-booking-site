@@ -1,38 +1,60 @@
-"use client";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Booking } from "@/types/types"; // Adjust path if needed
+'use client';
+
+import { useEffect, useState } from 'react';
+import BookingCard from '@/components/bookings/BookingCard';
+import { Booking } from '@/types/booking';
+import Navbar from '@/components/ui/Navbar';
+import Footer from '@/components/ui/Footer';
+import Cookies from 'js-cookie';
 
 
 export default function ProfilePage() {
-    const [bookings, setBookings] = useState<Booking[]>([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        window.location.href = "/login"; // ✅ still works
-        return;
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const res = await fetch('https://stayease-backend-lhmu.onrender.com/api/bookings/my-bookings', {
+          headers: {
+            'Authorization': `Bearer ${Cookies.get('token')}`, // fixed line
+          },
+        });
+
+        if (!res.ok) throw new Error('Failed to fetch bookings');
+        const data = await res.json();
+        setBookings(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
       }
-  
-      axios.get(`${process.env.NEXT_PUBLIC_API_BASE}/api/user/bookings`, {
-        headers: { Authorization: `Bearer ${token}` },
-      }).then((res) => setBookings(res.data.bookings));
-    }, []);
+    };
+
+    fetchBookings();
+  }, []);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Your Bookings</h1>
-      {bookings.length === 0 ? (
-        <p>No bookings yet.</p>
-      ) : (
-        bookings.map((b) => (
-          <div key={b._id} className="border rounded-md p-4 mb-3 bg-white">
-            <p>Hotel: {b.hotel.name}</p>
-            <p>Check-in: {new Date(b.checkIn).toLocaleDateString()}</p>
-            <p>Check-out: {new Date(b.checkOut).toLocaleDateString()}</p>
+    <>
+    <Navbar/>
+    <div className="min-h-screen bg-[#141413] text-gray-100 py-10 px-4">
+      <div className="container mx-auto max-w-4xl">
+        <h1 className="text-3xl font-bold text-gray-50 mb-6">My Bookings</h1>
+
+        {loading ? (
+          <p>Loading...</p>
+        ) : bookings.length === 0 ? (
+          <p className="text-gray-400">You have no bookings yet.</p>
+        ) : (
+          <div className="space-y-6">
+            {bookings.map((booking) => (
+              <BookingCard key={booking._id} booking={booking} />
+            ))}
           </div>
-        ))
-      )}
+        )}
+      </div>
     </div>
+    <Footer/>
+    </>
   );
 }

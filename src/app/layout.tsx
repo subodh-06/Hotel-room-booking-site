@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from '../context/AuthContext';
-import Navbar from "@/components/ui/Navbar";
-import { Footer } from "react-day-picker";
+import { Toaster } from 'sonner';
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,7 +30,7 @@ export default function RootLayout({
          data-gr-ext-installed=""
       >
         
-         <AuthProvider>{children}</AuthProvider>
+         {children}<Toaster />
          
       </body>
     </html>

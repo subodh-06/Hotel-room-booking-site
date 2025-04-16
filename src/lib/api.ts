@@ -1,40 +1,9 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+import { Hotel } from '@/types/hotel'; // adjust the import path if needed
 
-// lib/api.ts
-export const registerUser = async (userData: { name: string; email: string; password: string; role: 'guest' | 'owner' }) => {
-    const response = await fetch(`http://localhost:5000/api/users/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData),
-    });
-  
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || 'Registration failed');
-    }
-  
-    return response.json();
-  };
-  
-  
-
-export const loginUser = async (credentials: { email: string; password: string }) => {
-  const response = await fetch(`${API_BASE_URL}/users/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(credentials),
-  });
-  return response.json();
-};
-
-export const searchHotels = async (params: {
-  location: string;
-  checkIn: string;
-  checkOut: string;
-  guests: number;
-  rooms: number;
-}) => {
-  const query = new URLSearchParams(params as any).toString();
-  const response = await fetch(`${API_BASE_URL}/hotels/search?${query}`);
-  return response.json();
-};
+export async function fetchHotels(city: string): Promise<Hotel[]> {
+  const res = await fetch(
+    `https://stayease-backend-lhmu.onrender.com/api/hotels/search?city=${city}`
+  );
+  if (!res.ok) throw new Error('Failed to fetch hotels');
+  return res.json();
+}

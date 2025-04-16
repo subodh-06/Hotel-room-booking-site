@@ -1,24 +1,41 @@
-"use client";
+'use client';
 
-import { MenuIcon } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from 'react';
+import { MenuIcon } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import Cookies from 'js-cookie';
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
+} from '@/components/ui/navigation-menu';
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
+} from '@/components/ui/sheet';
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = Cookies.get('token');
+    setIsLoggedIn(!!token);
+  }, []);
+
+  const handleSignOut = () => {
+    Cookies.remove('token');
+    setIsLoggedIn(false);
+    router.push('/'); // redirect to home or login page
+  };
+
   return (
     <section className="py-4">
       <div className="container mx-auto px-4">
@@ -46,13 +63,13 @@ const Navbar = () => {
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link href="/book-a-room" className={navigationMenuTriggerStyle()}>
+                <Link href="/search" className={navigationMenuTriggerStyle()}>
                   Book a Room
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link href="#" className={navigationMenuTriggerStyle()}>
-                  Contact
+                <Link href="/owner/list-hotel" className={navigationMenuTriggerStyle()}>
+                  List Your Hotel
                 </Link>
               </NavigationMenuItem>
             </NavigationMenuList>
@@ -60,7 +77,11 @@ const Navbar = () => {
 
           {/* Desktop Buttons */}
           <div className="hidden lg:flex items-center gap-4">
-            <Button ><Link href={"/login"}>Sign in</Link></Button>
+            {isLoggedIn ? (
+              <Button variant="destructive" onClick={handleSignOut}>Sign out</Button>
+            ) : (
+              <Button><Link href="/auth">Sign in</Link></Button>
+            )}
           </div>
 
           {/* Mobile Menu */}
@@ -87,18 +108,16 @@ const Navbar = () => {
               </SheetHeader>
               <div className="flex flex-col items-start">
                 <div className="flex flex-col gap-4 w-full mt-4">
-                  <Link href="/" className="font-medium">
-                    Home
-                  </Link>
-                  <Link href="#" className="font-medium">
-                    Book a Room
-                  </Link>
-                  <Link href="#" className="font-medium">
-                    Contact
-                  </Link>
+                  <Link href="/" className="font-medium">Home</Link>
+                  <Link href="/search" className="font-medium">Book a Room</Link>
+                  <Link href="/owner/list-hotel" className="font-medium">List Your Hotel</Link>
                 </div>
                 <div className="mt-6 flex flex-col gap-4 w-full">
-                  <Button className="w-full">Sign in</Button>
+                  {isLoggedIn ? (
+                    <Button className="w-full" variant="destructive" onClick={handleSignOut}>Sign out</Button>
+                  ) : (
+                    <Button className="w-full"><Link href="/auth">Sign in</Link></Button>
+                  )}
                 </div>
               </div>
             </SheetContent>
