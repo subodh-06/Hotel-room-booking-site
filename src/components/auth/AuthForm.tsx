@@ -132,6 +132,7 @@ export default function AuthForm() {
             name="email"
             type="email"
             placeholder="john@example.com"
+            className='text-black'
             value={formData.email}
             onChange={handleChange}
             required
@@ -147,6 +148,7 @@ export default function AuthForm() {
             name="password"
             type="password"
             placeholder="********"
+            className='text-black'
             value={formData.password}
             onChange={handleChange}
             required

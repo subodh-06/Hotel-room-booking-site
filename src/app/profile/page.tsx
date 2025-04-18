@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import BookingCard from '@/components/bookings/BookingCard';
 import { Booking } from '@/types/booking';
-import Navbar from '@/components/ui/Navbar';
-import Footer from '@/components/ui/Footer';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import Cookies from 'js-cookie';
 
 

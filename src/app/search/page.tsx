@@ -5,8 +5,8 @@ import SearchForm from '@/components/hotels/SearchForm';
 import HotelCard from '@/components/hotels/HotelCard';
 import { fetchHotels } from '@/lib/api';
 import { Hotel } from '@/types/hotel';
-import Navbar from '@/components/ui/Navbar';
-import Footer from '@/components/ui/Footer';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 export default function SearchPage() {
   const [hotels, setHotels] = useState<Hotel[]>([]);
@@ -30,9 +30,17 @@ export default function SearchPage() {
   return (
     <>
     <Navbar/>
-    <div className="min-h-screen bg-[#141413] text-gray-100 p-6">
+    <section className="bg-[#141413] text-white py-16 flex flex-col justify-center items-center px-4">
+    <div className="text-center px-4 max-w-2xl">
+        <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4">
+        Search Your Perfect Stay 🏨
+        </h1>
+        <p className="text-lg md:text-xl mb-6">
+        Search and Discover amazing hotels at unbeatable prices. Book now and experience luxury like never before!
+        </p>
+      </div>
       <div className="container mx-auto">
-        <h1 className="text-3xl font-bold mb-6 text-gray-50">Search Hotels</h1>
+     
         <SearchForm onSearch={handleSearch} />
         {loading && <p className="text-gray-400">Loading hotels...</p>}
         {error && <p className="text-red-500">{error}</p>}
@@ -42,7 +50,7 @@ export default function SearchPage() {
           ))}
         </div>
       </div>
-    </div>
+    </section>
     <Footer/>
     </>
     

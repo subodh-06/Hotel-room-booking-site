@@ -6,10 +6,18 @@ import { BookingFormInput } from '@/types/booking';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils'; // Utility function to handle className merging
 import Cookies from 'js-cookie';
 
 export default function BookingForm({ hotelId }: { hotelId: string }) {
   const router = useRouter();
+
+  const [checkInDate, setCheckInDate] = useState<Date | undefined>();
+  const [checkOutDate, setCheckOutDate] = useState<Date | undefined>();
+
   const [form, setForm] = useState<BookingFormInput>({
     checkIn: '',
     checkOut: '',
@@ -26,16 +34,16 @@ export default function BookingForm({ hotelId }: { hotelId: string }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     const res = await fetch('https://stayease-backend-lhmu.onrender.com/api/bookings/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${Cookies.get('token')}`, // fixed line
+        'Authorization': `Bearer ${Cookies.get('token')}`,
       },
       body: JSON.stringify({ ...form, hotelId }),
     });
-  
+
     if (res.ok) {
       router.push('/profile');
     } else {
@@ -43,33 +51,71 @@ export default function BookingForm({ hotelId }: { hotelId: string }) {
     }
   };
 
+  const handleDateChange = (field: 'checkIn' | 'checkOut', date: Date | undefined) => {
+    const isoDate = date ? date.toISOString().split('T')[0] : '';
+    setForm((prev) => ({ ...prev, [field]: isoDate }));
+
+    if (field === 'checkIn') setCheckInDate(date);
+    else setCheckOutDate(date);
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid grid-cols-2 gap-4">
+        {/* Check In */}
         <div className="space-y-1">
           <Label htmlFor="checkIn" className="text-gray-300">Check In</Label>
-          <Input
-            type="date"
-            name="checkIn"
-            id="checkIn"
-            onChange={handleChange}
-            required
-            className="bg-[#1e1e1c] text-gray-100 border border-gray-700"
-          />
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn(
+                  'w-full justify-start text-left font-normal bg-[#1e1e1c] text-gray-100 border border-gray-700',
+                  !checkInDate && 'text-muted-foreground'
+                )}
+              >
+                {checkInDate ? format(checkInDate, 'PPP') : 'Pick a date'}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0 bg-white" align="start">
+              <Calendar
+                mode="single"
+                selected={checkInDate}
+                onSelect={(date) => handleDateChange('checkIn', date)}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
         </div>
+
+        {/* Check Out */}
         <div className="space-y-1">
           <Label htmlFor="checkOut" className="text-gray-300">Check Out</Label>
-          <Input
-            type="date"
-            name="checkOut"
-            id="checkOut"
-            onChange={handleChange}
-            required
-            className="bg-[#1e1e1c] text-gray-100 border border-gray-700"
-          />
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn(
+                  'w-full justify-start text-left font-normal bg-[#1e1e1c] text-gray-100 border border-gray-700',
+                  !checkOutDate && 'text-muted-foreground'
+                )}
+              >
+                {checkOutDate ? format(checkOutDate, 'PPP') : 'Pick a date'}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0 bg-white" align="start">
+              <Calendar
+                mode="single"
+                selected={checkOutDate}
+                onSelect={(date) => handleDateChange('checkOut', date)}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
         </div>
       </div>
 
+      {/* Rooms and People */}
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-1">
           <Label htmlFor="rooms" className="text-gray-300">Rooms</Label>
@@ -99,6 +145,7 @@ export default function BookingForm({ hotelId }: { hotelId: string }) {
         </div>
       </div>
 
+      {/* Guest Name */}
       <div className="space-y-1">
         <Label htmlFor="guestName" className="text-gray-300">Guest Name</Label>
         <Input
@@ -112,6 +159,7 @@ export default function BookingForm({ hotelId }: { hotelId: string }) {
         />
       </div>
 
+      {/* Guest Phone */}
       <div className="space-y-1">
         <Label htmlFor="guestPhone" className="text-gray-300">Phone Number</Label>
         <Input
@@ -125,6 +173,7 @@ export default function BookingForm({ hotelId }: { hotelId: string }) {
         />
       </div>
 
+      {/* Submit Button */}
       <Button
         type="submit"
         className="w-full bg-gray-200 text-black hover:bg-yellow-300 font-semibold"

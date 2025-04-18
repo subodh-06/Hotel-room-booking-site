@@ -2,8 +2,8 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import BookingForm from '@/components/hotels/BookingForm';
 import { Hotel } from '@/types/hotel';
-import Navbar from '@/components/ui/Navbar';
-import Footer from '@/components/ui/Footer';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import {
   Card,
   CardContent,
@@ -49,7 +49,7 @@ export default async function HotelDetail({ params }: { params: { id: string } }
             </CardHeader>
             <CardContent className="space-y-2 text-sm md:text-base">
               <p><span className="font-semibold text-gray-400">Address:</span> {hotel.address}</p>
-              <p><span className="font-semibold text-gray-400">Rent:</span> ₹{hotel.pricePerNight} / night</p>
+              <p><span className="font-semibold text-gray-400">Rent:</span> ₹{hotel.pricePerDay} / night</p>
             </CardContent>
           </Card>
 

@@ -68,10 +68,19 @@ const Navbar = () => {
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link href="/owner/list-hotel" className={navigationMenuTriggerStyle()}>
+                <Link href="/owner" className={navigationMenuTriggerStyle()}>
                   List Your Hotel
                 </Link>
               </NavigationMenuItem>
+              {isLoggedIn ? (
+              <NavigationMenuItem>
+              <Link href="/profile" className={navigationMenuTriggerStyle()}>
+               profile
+              </Link>
+            </NavigationMenuItem>
+            ) : (
+              ""
+            )}
             </NavigationMenuList>
           </NavigationMenu>
 
@@ -110,7 +119,7 @@ const Navbar = () => {
                 <div className="flex flex-col gap-4 w-full mt-4">
                   <Link href="/" className="font-medium">Home</Link>
                   <Link href="/search" className="font-medium">Book a Room</Link>
-                  <Link href="/owner/list-hotel" className="font-medium">List Your Hotel</Link>
+                  <Link href="/owner" className="font-medium">List Your Hotel</Link>
                 </div>
                 <div className="mt-6 flex flex-col gap-4 w-full">
                   {isLoggedIn ? (

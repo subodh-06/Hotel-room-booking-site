@@ -1,150 +1,32 @@
 "use client";
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Input } from "@/components/ui/input";
-import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
+import React from 'react'
+import { Input } from './ui/input';
+import { Button } from './ui/button';
+import Link from 'next/link';
 
-type HotelSearchParams = {
-  location: string;
-  checkIn?: Date;
-  checkOut?: Date;
-  rooms: number;
-  adults: number;
-  children: number;
-};
-
-export default function HotelBookingForm({
-  onSearch,
-}: {
-  onSearch?: (params: HotelSearchParams) => void;
-}) {
-  const [location, setLocation] = useState("");
-  const [checkIn, setCheckIn] = useState<Date | undefined>();
-  const [checkOut, setCheckOut] = useState<Date | undefined>();
-  const [rooms, setRooms] = useState(1);
-  const [adults, setAdults] = useState(2);
-  const [children, setChildren] = useState(0);
-  const [openGuests, setOpenGuests] = useState(false);
-  const [openCheckIn, setOpenCheckIn] = useState(false);
-  const [openCheckOut, setOpenCheckOut] = useState(false);
-
-  const handleSearch = () => {
-    if (onSearch) {
-      onSearch({
-        location,
-        checkIn,
-        checkOut,
-        rooms,
-        adults,
-        children,
-      });
-    }
-  };
-
+function HotelBookingForm() {
   return (
     <div className="max-w-5xl mx-auto p-6 bg-zinc-800 shadow-md rounded-lg">
-       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+       
         <div>
-          <label className="block text-sm font-medium text-gray-50">Location</label>
+          <label className="block text-sm text-center mb-2 font-medium text-gray-50">Location</label>
           <Input 
             placeholder="Enter city or hotel name" 
             className="text-black w-full"
-            value={location} 
-            onChange={(e) => setLocation(e.target.value)} 
+            
           />
         </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-50">Check-in Date</label>
-          <Popover open={openCheckIn} onOpenChange={setOpenCheckIn}>
-            <PopoverTrigger asChild>
-              <Button variant="outline" className="w-full text-black">
-                {checkIn ? format(checkIn, "PPP") : "Select Date"}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto">
-              <Calendar 
-                mode="single" 
-                selected={checkIn} 
-                onSelect={(date) => { setCheckIn(date); setOpenCheckIn(false); }} 
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-50">Check-out Date</label>
-          <Popover open={openCheckOut} onOpenChange={setOpenCheckOut}>
-            <PopoverTrigger asChild>
-              <Button variant="outline" className="w-full text-black">
-                {checkOut ? format(checkOut, "PPP") : "Select Date"}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto">
-              <Calendar 
-                mode="single" 
-                selected={checkOut} 
-                onSelect={(date) => { setCheckOut(date); setOpenCheckOut(false); }} 
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-50">Guests & Rooms</label>
-          <Popover open={openGuests} onOpenChange={setOpenGuests}>
-            <PopoverTrigger asChild>
-              <Button variant="outline" className="w-full flex justify-between px-4 py-2 border rounded-lg text-black">
-                <span>{adults} Adults | {children} Children | {rooms} Room</span>
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-[300px] p-4 bg-white shadow-md rounded-lg">
-              <div className="flex justify-between items-center mb-3">
-                <span className="text-sm text-gray-600">Rooms (Max 8)</span>
-                <div className="flex items-center gap-2">
-                  <Button variant="outline" size="sm" onClick={() => setRooms((r) => Math.max(1, r - 1))}>-</Button>
-                  <span>{rooms}</span>
-                  <Button variant="outline" size="sm" onClick={() => setRooms((r) => Math.min(8, r + 1))}>+</Button>
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center mb-3">
-                <span className="text-sm text-gray-600">Adults (12+ yr)</span>
-                <div className="flex items-center gap-2">
-                  <Button variant="outline" size="sm" onClick={() => setAdults((a) => Math.max(1, a - 1))}>-</Button>
-                  <span>{adults}</span>
-                  <Button variant="outline" size="sm" onClick={() => setAdults((a) => a + 1)}>+</Button>
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center mb-3">
-                <span className="text-sm text-gray-600">Children (0-11 yr)</span>
-                <div className="flex items-center gap-2">
-                  <Button variant="outline" size="sm" onClick={() => setChildren((c) => Math.max(0, c - 1))}>-</Button>
-                  <span>{children}</span>
-                  <Button variant="outline" size="sm" onClick={() => setChildren((c) => c + 1)}>+</Button>
-                </div>
-              </div>
-
-              <Button className="w-full bg-orange-500 text-white py-2 hover:bg-orange-600" onClick={() => setOpenGuests(false)}>
-                DONE
-              </Button>
-            </PopoverContent>
-          </Popover>
-        </div>
-      </div>
-      
       <div className="mt-4 flex justify-center">
         <Button
           className="w-full sm:w-auto py-2 px-6 hover:bg-orange-600"
-          onClick={handleSearch}
+         
         >
-          Search Hotels
+         <Link href="/search"> Search Hotels</Link>
         </Button>
       </div>
     </div>
-  );
+  )
 }
+
+export default HotelBookingForm

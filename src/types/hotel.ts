@@ -6,7 +6,7 @@ export interface Hotel {
     name: string;
     city: string;
     address: string;
-    pricePerNight: number;
+    pricePerDay: number;
     imageUrl: string;
   }
   
