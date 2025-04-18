@@ -14,6 +14,12 @@ import {
   CardDescription
 } from '@/components/ui/card';
 
+interface HotelDetailPageProps {
+  params: {
+    id: string;
+  };
+}
+
 async function getHotel(id: string): Promise<Hotel | null> {
   try {
     const res = await fetch(`https://stayease-backend-lhmu.onrender.com/api/hotels/${id}`);
@@ -25,11 +31,7 @@ async function getHotel(id: string): Promise<Hotel | null> {
   }
 }
 
-export default async function HotelDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function HotelDetail({ params }: HotelDetailPageProps) {
   const hotel = await getHotel(params.id);
   if (!hotel) return notFound();
 
@@ -48,9 +50,7 @@ export default async function HotelDetailPage({
             />
             <CardHeader>
               <CardTitle className="text-3xl">{hotel.name}</CardTitle>
-              <CardDescription className="text-gray-400">
-                {hotel.city}
-              </CardDescription>
+              <CardDescription className="text-gray-400">{hotel.city}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2 text-sm md:text-base">
               <p><span className="font-semibold text-gray-400">Address:</span> {hotel.address}</p>
