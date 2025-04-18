@@ -14,12 +14,7 @@ import {
   CardDescription
 } from '@/components/ui/card';
 
-// ✅ Used properly
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
+// ✅ Removed custom PageProps to avoid type conflict
 
 async function getHotel(id: string): Promise<Hotel | null> {
   try {
@@ -32,8 +27,12 @@ async function getHotel(id: string): Promise<Hotel | null> {
   }
 }
 
-// ✅ PageProps used here
-export default async function HotelDetail({ params }: PageProps) {
+// ✅ Inline type for props to avoid conflict with internal Next.js PageProps
+export default async function HotelDetail({
+  params,
+}: {
+  params: { id: string };
+}) {
   const hotel = await getHotel(params.id);
   if (!hotel) return notFound();
 
