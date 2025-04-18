@@ -31,8 +31,10 @@ async function getHotel(id: string): Promise<Hotel | null> {
   }
 }
 
-export default async function HotelDetail({ params }: HotelDetailPageProps) {
-  const hotel = await getHotel(params.id);
+export default async function HotelDetail(props: { params: Promise<{ id: string }> }) {
+  const { id } = await props.params; // ✅ Await it
+  const hotel = await getHotel(id);
+
   if (!hotel) return notFound();
 
   return (
@@ -64,7 +66,7 @@ export default async function HotelDetail({ params }: HotelDetailPageProps) {
               <CardDescription className="text-gray-400">Fill the form to reserve your stay</CardDescription>
             </CardHeader>
             <CardContent>
-              <BookingForm hotelId={params.id} />
+              <BookingForm hotelId={id} />
             </CardContent>
           </Card>
         </div>
@@ -73,3 +75,4 @@ export default async function HotelDetail({ params }: HotelDetailPageProps) {
     </>
   );
 }
+
