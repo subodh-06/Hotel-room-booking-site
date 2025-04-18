@@ -1,5 +1,3 @@
-// src/app/hotel/[id]/page.tsx
-
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import BookingForm from '@/components/hotels/BookingForm';
@@ -14,8 +12,6 @@ import {
   CardDescription
 } from '@/components/ui/card';
 
-// ✅ Removed custom PageProps to avoid type conflict
-
 async function getHotel(id: string): Promise<Hotel | null> {
   try {
     const res = await fetch(`https://stayease-backend-lhmu.onrender.com/api/hotels/${id}`);
@@ -27,12 +23,8 @@ async function getHotel(id: string): Promise<Hotel | null> {
   }
 }
 
-// ✅ Inline type for props to avoid conflict with internal Next.js PageProps
-export default async function HotelDetail({
-  params,
-}: {
-  params: { id: string };
-}) {
+// ✅ No custom types, just inline destructure props
+export default async function HotelDetail({ params }: { params: { id: string } }) {
   const hotel = await getHotel(params.id);
   if (!hotel) return notFound();
 
