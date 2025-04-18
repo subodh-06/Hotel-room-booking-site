@@ -14,11 +14,7 @@ import {
   CardDescription
 } from '@/components/ui/card';
 
-interface HotelDetailPageProps {
-  params: {
-    id: string;
-  };
-}
+
 
 async function getHotel(id: string): Promise<Hotel | null> {
   try {
