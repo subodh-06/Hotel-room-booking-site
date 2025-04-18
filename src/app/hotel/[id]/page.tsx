@@ -1,3 +1,5 @@
+// src/app/hotel/[id]/page.tsx
+
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import BookingForm from '@/components/hotels/BookingForm';
@@ -12,24 +14,22 @@ import {
   CardDescription
 } from '@/components/ui/card';
 
-interface HotelDetailPageProps {
-  params: {
-    id: string;
-  };
-}
-
 async function getHotel(id: string): Promise<Hotel | null> {
   try {
     const res = await fetch(`https://stayease-backend-lhmu.onrender.com/api/hotels/${id}`);
     if (!res.ok) return null;
     return res.json();
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return null;
   }
 }
 
-export default async function HotelDetail({ params }: HotelDetailPageProps) {
+export default async function HotelDetailPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const hotel = await getHotel(params.id);
   if (!hotel) return notFound();
 
@@ -38,7 +38,6 @@ export default async function HotelDetail({ params }: HotelDetailPageProps) {
       <Navbar />
       <main className="min-h-screen bg-[#141413] text-gray-100 py-12 px-4">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-start">
-          {/* Hotel Info */}
           <Card className="bg-[#1e1e1c] border border-gray-700 text-gray-100 shadow-lg rounded-2xl overflow-hidden">
             <Image
               src={hotel.images[0]}
@@ -59,7 +58,6 @@ export default async function HotelDetail({ params }: HotelDetailPageProps) {
             </CardContent>
           </Card>
 
-          {/* Booking Form */}
           <Card className="bg-[#1e1e1c] border border-gray-700 text-gray-100 shadow-lg rounded-2xl">
             <CardHeader>
               <CardTitle className="text-2xl">Book this hotel</CardTitle>
