@@ -12,6 +12,12 @@ import {
   CardDescription
 } from '@/components/ui/card';
 
+interface HotelDetailPageProps {
+  params: {
+    id: string;
+  };
+}
+
 async function getHotel(id: string): Promise<Hotel | null> {
   try {
     const res = await fetch(`https://stayease-backend-lhmu.onrender.com/api/hotels/${id}`);
@@ -23,8 +29,7 @@ async function getHotel(id: string): Promise<Hotel | null> {
   }
 }
 
-// ✅ No custom types, just inline destructure props
-export default async function HotelDetail({ params }: { params: { id: string } }) {
+export default async function HotelDetail({ params }: HotelDetailPageProps) {
   const hotel = await getHotel(params.id);
   if (!hotel) return notFound();
 
