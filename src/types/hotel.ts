@@ -10,4 +10,12 @@ export interface Hotel {
   address: string;
   pricePerDay: number;
   imageUrl: string;
+
+  amenities?: {
+    ac: boolean;
+    wifi: boolean;
+    tv: boolean;
+    geyser: boolean;
+    powerBackup: boolean;
+  };
 }
