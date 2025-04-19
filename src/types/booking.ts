@@ -9,7 +9,6 @@ export interface BookingFormInput {
   
   export interface Booking {
     _id: string;
-    hotelName: string;
     guestName: string;
     guestPhone: string;
     checkIn: string;
@@ -17,5 +16,20 @@ export interface BookingFormInput {
     rooms: number;
     people: number;
     createdAt: string;
+    hotel: {
+      name: string;
+      city: string;
+      address: string;
+      pricePerDay: number;
+      images: string[];
+      amenities: {
+        ac: boolean;
+        wifi: boolean;
+        tv: boolean;
+        geyser: boolean;
+        powerBackup: boolean;
+      };
+    };
   }
+  
   

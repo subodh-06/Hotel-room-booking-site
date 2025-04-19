@@ -4,7 +4,9 @@ import moment from 'moment';
 export default function BookingCard({ booking }: { booking: Booking }) {
   return (
     <div className="bg-gray-900 border border-gray-700 rounded-md p-4 text-gray-200 shadow-md">
-      <h3 className="text-xl font-semibold text-gray-50 mb-1">{booking.hotelName}</h3>
+      <h3 className="text-xl font-semibold text-gray-50 mb-1">
+        {booking.hotel.name}
+      </h3>
       <p>Guest: {booking.guestName} ({booking.guestPhone})</p>
       <p>
         Dates: {moment(booking.checkIn).format('MMM D, YYYY')} →{' '}
@@ -17,3 +19,4 @@ export default function BookingCard({ booking }: { booking: Booking }) {
     </div>
   );
 }
+
